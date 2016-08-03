@@ -1,4 +1,6 @@
-from flask import Flask
+#!/usr/local/bin/python
+
+from flask import Flask, render_template
 from flask_restful import reqparse, abort, Api, Resource
 import arrow
 import json
@@ -37,13 +39,10 @@ class Data(Resource):
         abort_if_data_doesnt_exist(data_id)
         args = board_data_parser.parse_args()
         
-        if args['owner'] != None:
-            DATA[data_id]['owner'] = args['owner']
-        if args['mac_addr'] != None:
-            DATA[data_id]['mac_addr'] = args['mac_addr']
-        if args['notes'] != None:
-            DATA[data_id]['notes'] = args['notes']
-        
+        for k, v in args.iteritems():
+            if v != None:
+                DATA[data_id][k] = v
+
         DATA[data_id]['last_update'] = arrow.now().format('YYYY-MM-DD HH:mm:ss ZZ') 
         
         return DATA[data_id], 201
@@ -62,20 +61,16 @@ class DataList(Resource):
 
     def post(self):
         args = new_board_parser.parse_args()
+        
         data_id = args['boardnum']
         data = { 'mac_addr'     : '',
                  'notes'        : '',
                  'owner'        : '',
                  'last_update'  : ''}
         
-        
-        
-        if args['mac_addr'] != None:
-            data['mac_addr'] = args['mac_addr']
-        if args['notes'] != None:
-            data['notes'] = args['notes']
-        if args['owner'] != None:
-            data['owner'] = args['owner']
+        for k, v in args.iteritems():
+            if v != None:
+                data[k] = v
             
         data['last_update'] = arrow.now().format('YYYY-MM-DD HH:mm:ss ZZ') 
         DATA[data_id] = data

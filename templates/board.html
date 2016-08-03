@@ -1,0 +1,22 @@
+<html lang="en">
+<head>
+    <title>My Webpage</title>
+</head>
+<body>
+{% if name %}
+  <h1>Hello {{ name }}!</h1>
+{% else %}
+  <h1>Hello, World!</h1>
+{% endif %}
+
+<h1>Board Number: {{ board_no }}</h1>
+
+{% if mac_addr %}
+	<h1>MAC Address : {{ mac_addr }}</h1>
+{% else %}
+	<h1>MAC Address : (unassigned)</h1>
+{% endif %}
+</body>
+</html>
+
+
