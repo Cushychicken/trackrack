@@ -1,5 +1,3 @@
-#!/usr/local/bin/python
-
 from flask import Flask, render_template
 from flask_restful import reqparse, abort, Api, Resource
 import arrow
@@ -21,6 +19,17 @@ board_data_parser = reqparse.RequestParser()
 board_data_parser.add_argument('owner')
 board_data_parser.add_argument('mac_addr')
 board_data_parser.add_argument('notes')
+
+@app.route('/data/<data_id>')
+def show(data_id):
+    print data_id
+    tmp = DATA[data_id]
+    print tmp
+    return render_template('board.html', 
+                           board_no=data_id,
+                           mac_addr=tmp['mac_addr'],
+                           notes=tmp['notes'])
+
 
 # data
 # shows a single data item and lets you delete a data item
@@ -80,7 +89,7 @@ class DataList(Resource):
 ## Actually setup the Api resource routing here
 ##
 api.add_resource(DataList, '/', '/data')
-api.add_resource(Data, '/data/<data_id>')
+## api.add_resource(Data, '/data/<data_id>')
 
 if __name__ == '__main__':
     with open('demo_data.json') as data_file:    

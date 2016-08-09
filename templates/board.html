@@ -16,6 +16,11 @@
 {% else %}
 	<h1>MAC Address : (unassigned)</h1>
 {% endif %}
+{% if notes %}
+    <h1>Notes       : {{ notes }}</h1>
+{% else %}
+    <h1>Notes       : (blank)</h1>
+{% endif %}
 </body>
 </html>
 
