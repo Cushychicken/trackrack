@@ -1,26 +1,61 @@
 <html lang="en">
 <head>
-    <title>My Webpage</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <title>Board Info - {{ board_no }}</title>
 </head>
 <body>
-{% if name %}
-  <h1>Hello {{ name }}!</h1>
-{% else %}
-  <h1>Hello, World!</h1>
-{% endif %}
+    <div class="container">
 
-<h1>Board Number: {{ board_no }}</h1>
+        <div class="starter-template">
+            <h1>Board Number: {{ board_no }}</h1>         
+            <h2>Last updated {{ last_update }}</h2>
+            
+            {% if owner %}
+            <h2>Owner : {{ owner }}</h2>
+            {% else %}
+            <h2>Owner : (unassigned)</h2>
+            {% endif %}
+            
+            {% if mac_addr %}
+            <h2>MAC Address : {{ mac_addr }}</h2>
+            {% else %}
+            <h2>MAC Address : (unassigned)</h2>
+            {% endif %}
+            
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date Entered</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                    
+                <tbody>
+                    {% for note in notes %}
+                    <tr>
+                        <td>{{ note.time }}</td>
+                        <td>{{ note.info }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            
+        </div>
+    </div><!-- /.container -->
 
-{% if mac_addr %}
-	<h1>MAC Address : {{ mac_addr }}</h1>
-{% else %}
-	<h1>MAC Address : (unassigned)</h1>
-{% endif %}
-{% if notes %}
-    <h1>Notes       : {{ notes }}</h1>
-{% else %}
-    <h1>Notes       : (blank)</h1>
-{% endif %}
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 </body>
 </html>
 

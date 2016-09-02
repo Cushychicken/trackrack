@@ -25,8 +25,12 @@ def show(data_id):
     print data_id
     tmp = DATA[data_id]
     print tmp
+    time = arrow.get(tmp['last_update'], 'YYYY-MM-DD HH:mm:ss ZZ')
+    print time
     return render_template('board.html', 
+                           owner=tmp['owner'],
                            board_no=data_id,
+                           last_update=time.humanize(),
                            mac_addr=tmp['mac_addr'],
                            notes=tmp['notes'])
 
