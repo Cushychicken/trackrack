@@ -12,7 +12,6 @@
 </head>
 <body>
     <div class="container">
-
         <div class="starter-template">
             <h1>Board Number: {{ board_no }}</h1>         
             <h2>Last updated {{ last_update }}</h2>
@@ -28,7 +27,11 @@
             {% else %}
             <h2>MAC Address : (unassigned)</h2>
             {% endif %}
-            
+            <form method=post action="/data/{{ board_no }}">
+                <textarea name="boardnote">Enter modifications here.</textarea><br><br>
+                <input type=submit value="Add Note" class="btn btn-default">
+                <input type=submit value="Check Out" class="btn btn-primary"> 
+            </form>
             <table class="table table-striped">
                 <thead>
                     <tr>

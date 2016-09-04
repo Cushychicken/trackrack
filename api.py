@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_restful import reqparse, abort, Api, Resource
 import arrow
 import json
@@ -20,13 +20,17 @@ board_data_parser.add_argument('owner')
 board_data_parser.add_argument('mac_addr')
 board_data_parser.add_argument('notes')
 
-@app.route('/data/<data_id>')
+@app.route('/data/<data_id>', methods=['GET', 'POST'])
 def show(data_id):
-    print data_id
+    if request.method == 'POST':
+        newnote = { "time" : arrow.now().format('YYYY-MM-DD HH:mm:ss ZZ'), 
+                    "info" : request.form['boardnote'] }
+        DATA[data_id]['notes'].append(newnote)
+
+    time = arrow.now()
+    DATA[data_id]['last_update'] = time.format('YYYY-MM-DD HH:mm:ss ZZ')
     tmp = DATA[data_id]
-    print tmp
-    time = arrow.get(tmp['last_update'], 'YYYY-MM-DD HH:mm:ss ZZ')
-    print time
+
     return render_template('board.html', 
                            owner=tmp['owner'],
                            board_no=data_id,
@@ -82,7 +86,7 @@ class DataList(Resource):
                  'last_update'  : ''}
         
         for k, v in args.iteritems():
-            if v != None:
+            if (v != None) and (k in data):
                 data[k] = v
             
         data['last_update'] = arrow.now().format('YYYY-MM-DD HH:mm:ss ZZ') 
