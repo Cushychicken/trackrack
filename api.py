@@ -22,12 +22,12 @@ board_data_parser.add_argument('notes')
 
 @app.route('/data/<data_id>', methods=['GET', 'POST'])
 def show(data_id):
+    time = arrow.now()
     if request.method == 'POST':
-        newnote = { "time" : arrow.now().format('YYYY-MM-DD HH:mm:ss ZZ'), 
+        newnote = { "time" : time.format('YYYY-MM-DD HH:mm:ss ZZ'), 
                     "info" : request.form['boardnote'] }
         DATA[data_id]['notes'].append(newnote)
 
-    time = arrow.now()
     DATA[data_id]['last_update'] = time.format('YYYY-MM-DD HH:mm:ss ZZ')
     tmp = DATA[data_id]
 
@@ -37,7 +37,6 @@ def show(data_id):
                            last_update=time.humanize(),
                            mac_addr=tmp['mac_addr'],
                            notes=tmp['notes'])
-
 
 # data
 # shows a single data item and lets you delete a data item
@@ -100,6 +99,6 @@ api.add_resource(DataList, '/', '/data')
 ## api.add_resource(Data, '/data/<data_id>')
 
 if __name__ == '__main__':
-    with open('demo_data.json') as data_file:    
+    with open('tests/demo_data.json') as data_file:    
         DATA = json.load(data_file)
         app.run('0.0.0.0', debug=True)
