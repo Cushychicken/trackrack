@@ -20,24 +20,6 @@ board_data_parser.add_argument('owner')
 board_data_parser.add_argument('mac_addr')
 board_data_parser.add_argument('notes')
 
-@app.route('/data/<data_id>', methods=['GET', 'POST'])
-def show(data_id):
-    time = arrow.now()
-    if request.method == 'POST':
-        newnote = { "time" : time.format('YYYY-MM-DD HH:mm:ss ZZ'), 
-                    "info" : request.form['boardnote'] }
-        DATA[data_id]['notes'].append(newnote)
-
-    DATA[data_id]['last_update'] = time.format('YYYY-MM-DD HH:mm:ss ZZ')
-    tmp = DATA[data_id]
-
-    return render_template('board.html', 
-                           owner=tmp['owner'],
-                           board_no=data_id,
-                           last_update=time.humanize(),
-                           mac_addr=tmp['mac_addr'],
-                           notes=tmp['notes'])
-
 # data
 # shows a single data item and lets you delete a data item
 class Data(Resource):
@@ -68,12 +50,7 @@ class Data(Resource):
 # shows a list of all data, and lets you POST to add new meas
 class DataList(Resource):
     def get(self):
-        if len(DATA) <= 20:
-            return DATA
-        else:
-            last = len(DATA)
-            tmp = [ DATA.get('data'+str(a)) for a in range((DATA-20), DATA) ]
-            return tmp
+        return DATA
 
     def post(self):
         args = new_board_parser.parse_args()
@@ -96,7 +73,7 @@ class DataList(Resource):
 ## Actually setup the Api resource routing here
 ##
 api.add_resource(DataList, '/', '/data')
-## api.add_resource(Data, '/data/<data_id>')
+api.add_resource(Data, '/data/<data_id>')
 
 if __name__ == '__main__':
     with open('tests/demo_data.json') as data_file:    

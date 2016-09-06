@@ -13,38 +13,26 @@
 <body>
     <div class="container">
         <div class="starter-template">
-            <h1>Board Number: {{ board_no }}</h1>         
-            <h2>Last updated {{ last_update }}</h2>
+            <h1>Trackrack</h1>         
+            <h2>Boards Tracked</h2>
             
-            {% if owner %}
-            <h2>Owner : {{ owner }}</h2>
-            {% else %}
-            <h2>Owner : (unassigned)</h2>
-            {% endif %}
-            
-            {% if mac_addr %}
-            <h2>MAC Address : {{ mac_addr }}</h2>
-            {% else %}
-            <h2>MAC Address : (unassigned)</h2>
-            {% endif %}
-            <form method=post action="/data/{{ board_no }}">
-                <textarea name="boardnote">Enter modifications here.</textarea><br><br>
-                <input type=submit value="Add Note" class="btn btn-default">
-                <input type=submit value="Check Out" class="btn btn-primary" formaction="/data/{{ board_no }}/checkout"> 
-            </form>
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Date Entered</th>
-                        <th>Notes</th>
+                        <th>Board No.</th>
+                        <th>Owner</th>
+                        <th>MAC Addr.</th>
+                        <th>Last Update</th>
                     </tr>
                 </thead>
                     
                 <tbody>
-                    {% for note in notes %}
+                    {% for board in data %}
                     <tr>
-                        <td>{{ note.time }}</td>
-                        <td>{{ note.info }}</td>
+                        <td><a href="/data/{{ board }}">{{ board }}</a></td>
+                        <td>{{ data[board].owner }}</td>
+                        <td>{{ data[board].mac_addr }}</td>
+                        <td>{{ data[board].last_update }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
