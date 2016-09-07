@@ -17,8 +17,6 @@ def show(data_id):
         time = arrow.get(DATA[data_id]['last_update'], 'YYYY-MM-DD HH:mm:ss ZZ')
     
     tmp = DATA[data_id]
-    print tmp
-    print time
     return render_template('board.html', 
                            owner=tmp['owner'],
                            board_no=data_id,
@@ -30,6 +28,12 @@ def show(data_id):
 def boards():
     return render_template('boardlist.html',
                             data=DATA)
+
+@app.route('/data/<data_id>/checkout', methods=['GET'])
+def checkout(data_id):
+    test = "Well, check you out, {0}, looking at board {1}"
+    test = test.format(request.args.get('email'), data_id)
+    return test
 
 if __name__ == '__main__':
     with open('tests/demo_data.json') as data_file:    

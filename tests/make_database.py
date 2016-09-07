@@ -1,6 +1,5 @@
 import dataset
 import json
-import arrow
 
 with open('demo_data.json') as f:
     data = json.load(f)

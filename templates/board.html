@@ -27,11 +27,16 @@
             {% else %}
             <h2>MAC Address : (unassigned)</h2>
             {% endif %}
-            <form method=post action="/data/{{ board_no }}">
-                <textarea name="boardnote">Enter modifications here.</textarea><br><br>
-                <input type=submit value="Add Note" class="btn btn-default">
-                <input type=submit value="Check Out" class="btn btn-primary" formaction="/data/{{ board_no }}/checkout"> 
-            </form>
+            <table>
+                <form method=post action="/data/{{ board_no }}">
+                    <textarea name="boardnote">Enter modifications here.</textarea><br><br>
+                    <input type=submit value="Add Note" class="btn btn-default">
+                </form>
+                <form method=get action="/data/{{ board_no }}/checkout">
+                    <input type=submit value="Check Out" class="btn btn-primary">
+                </form>
+            </table>
+            
             <table class="table table-striped">
                 <thead>
                     <tr>
