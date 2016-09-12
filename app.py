@@ -5,7 +5,7 @@ import json
 app = Flask(__name__)
 
 @app.route('/data/<data_id>', methods=['GET', 'POST'])
-def show(data_id):
+def board(data_id):
     time = ''
     if request.method == 'POST':
         time = arrow.now()
@@ -25,15 +25,17 @@ def show(data_id):
                            notes=tmp['notes'])
 
 @app.route('/', methods=['GET'])
-def boards():
+def boardlist():
     return render_template('boardlist.html',
                             data=DATA)
 
 @app.route('/data/<data_id>/checkout', methods=['GET'])
 def checkout(data_id):
-    test = "Well, check you out, {0}, looking at board {1}"
-    test = test.format(request.args.get('email'), data_id)
-    return test
+    new_owner = request.args.get('email')
+    return render_template('checkout.html',
+                           board_no=data_id,
+                           new_owner=new_owner,
+                           owner=DATA[data_id]['owner'])
 
 if __name__ == '__main__':
     with open('tests/demo_data.json') as data_file:    
