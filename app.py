@@ -1,6 +1,19 @@
 from flask import Flask, render_template, request
+import urllib
 import arrow
 import json
+import socket 
+import fcntl
+import struct
+
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+
 
 app = Flask(__name__)
 
@@ -36,6 +49,18 @@ def checkout(data_id):
                            board_no=data_id,
                            new_owner=new_owner,
                            owner=DATA[data_id]['owner'])
+
+@app.route('/scansetup/', methods=['GET', 'POST'])
+def scansetup():
+    if request.method == 'POST':
+        tmp = 'http://{1}:5000/data/%s?email={2}'
+        email = request.form['email']
+        ipadr = get_ip_address('eth0')
+        tmp = tmp.format(ipadr, email)
+        tmp = urllib.urlencode(tmp)
+        return tmp
+        
+        
 
 if __name__ == '__main__':
     with open('tests/demo_data.json') as data_file:    
