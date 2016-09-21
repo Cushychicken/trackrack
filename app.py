@@ -50,16 +50,19 @@ def checkout(data_id):
                            new_owner=new_owner,
                            owner=DATA[data_id]['owner'])
 
-@app.route('/scansetup/', methods=['GET', 'POST'])
+@app.route('/scansetup', methods=['GET', 'POST'])
 def scansetup():
     if request.method == 'POST':
-        tmp = 'http://{1}:5000/data/%s?email={2}'
+        tmp   = 'http://{0}:5000/data/%s?'
         email = request.form['email']
-        ipadr = get_ip_address('eth0')
-        tmp = tmp.format(ipadr, email)
-        tmp = urllib.urlencode(tmp)
-        return tmp
-        
+        email = urllib.urlencode({'email' : email})
+        ipadr = get_ip_address('wlxb07fb94fbcab')
+        tmp   = tmp.format(ipadr) + email
+        print tmp
+        return render_template('appsetup.html', tmp=tmp)
+    else:
+        return render_template('appsetup.html')
+
         
 
 if __name__ == '__main__':
