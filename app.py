@@ -2,18 +2,7 @@ from flask import Flask, render_template, request
 import urllib
 import arrow
 import json
-import socket 
-import fcntl
-import struct
-
-def get_ip_address(ifname):
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    return socket.inet_ntoa(fcntl.ioctl(
-        s.fileno(),
-        0x8915,  # SIOCGIFADDR
-        struct.pack('256s', ifname[:15])
-    )[20:24])
-
+import helpers
 
 app = Flask(__name__)
 
@@ -54,11 +43,9 @@ def checkout(data_id):
 def scansetup():
     if request.method == 'POST':
         tmp   = 'http://{0}:5000/data/%s?'
-        email = request.form['email']
-        email = urllib.urlencode({'email' : email})
-        ipadr = get_ip_address('wlxb07fb94fbcab')
+        email = urllib.urlencode({'email' : request.form['email']})
+        ipadr = helpers.get_ip_address('wlxb07fb94fbcab')
         tmp   = tmp.format(ipadr) + email
-        print tmp
         return render_template('appsetup.html', tmp=tmp)
     else:
         return render_template('appsetup.html')
