@@ -1,4 +1,3 @@
-
-tests/demo_data.json
-
-tests/demo_board.db
+*.pyc
+*.db
+*.json

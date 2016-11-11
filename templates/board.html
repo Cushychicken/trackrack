@@ -32,9 +32,15 @@
                     <textarea name="boardnote">Enter modifications here.</textarea><br><br>
                     <input type=submit value="Add Note" class="btn btn-default">
                 </form>
+                {% if new_owner %}
+                <form method=get action="/data/{{ board_no }}/checkout?{{ new_owner }}">
+                    <input type=submit value="Check Out" class="btn btn-primary">
+                </form>
+                {% else %}
                 <form method=get action="/data/{{ board_no }}/checkout">
                     <input type=submit value="Check Out" class="btn btn-primary">
                 </form>
+                {% endif %}
             </table>
             
             <table class="table table-striped">
