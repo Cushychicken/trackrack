@@ -1,31 +1,17 @@
 from flask import Flask, render_template, request
-<<<<<<< HEAD
-<<<<<<< HEAD
 import sys
-import dataset
 import urllib
 import arrow
 import json
 from dbmap import Board, Note
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-=======
-import urllib
-import arrow
-import json
-import helpers
->>>>>>> origin/master
-=======
-import urllib
-import arrow
-import json
-import helpers
->>>>>>> origin/master
 
 app = Flask(__name__)
 
 @app.route('/data/<data_id>', methods=['GET', 'POST'])
 def board(data_id):
+    # Database fetch of board info
     board = session.query(Board).filter_by(board_no=data_id).first()
     notes = session.query(Note).filter_by(board_no=data_id).all()
     bdata = []
@@ -35,7 +21,8 @@ def board(data_id):
                 'time' : entry.time
                }
         bdata.append(data)
-    print bdata
+
+    # Either updates or displays time 
     time = ''
     if request.method == 'POST':
         time = arrow.now()
@@ -75,16 +62,6 @@ def checkout(data_id):
                            new_owner=new_owner,
                            owner=DATA[data_id]['owner'])
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-if __name__ == '__main__':   
-    engine = create_engine('sqlite:///tests/demo_board.db', echo=True)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    app.run('0.0.0.0', debug=True)
-=======
-=======
->>>>>>> origin/master
 @app.route('/scansetup', methods=['GET', 'POST'])
 def scansetup():
     if request.method == 'POST':
@@ -95,11 +72,11 @@ def scansetup():
         return render_template('appsetup.html', tmp=tmp)
     else:
         return render_template('appsetup.html')
-
         
 
-if __name__ == '__main__':
-    with open('tests/demo_data.json') as data_file:    
-        DATA = json.load(data_file)
-        app.run('0.0.0.0', debug=True)
->>>>>>> origin/master
+if __name__ == '__main__':   
+    engine = create_engine('sqlite:///tests/demo_board.db', echo=True)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    app.run('0.0.0.0', debug=True)
+
