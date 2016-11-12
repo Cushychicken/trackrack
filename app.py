@@ -11,9 +11,18 @@ app = Flask(__name__)
 
 @app.route('/data/<data_id>', methods=['GET', 'POST'])
 def board(data_id):
+    # Adds note and updates time
+    if request.method == 'POST':
+        time = arrow.now()
+        note = Note(time=time.format('YYYY-MM-DD HH:mm:ss ZZ'),
+                    board_no=data_id,
+                    info=request.form['boardnote'])
+        session.add(note)
+        session.commit()
+
     # Database fetch of board info
     board = session.query(Board).filter_by(board_no=data_id).first()
-    notes = session.query(Note).filter_by(board_no=data_id).all()
+    notes = session.query(Note).filter_by(board_no=data_id).order_by(Note.time.desc()).all()
     bdata = []
     for entry in notes:
         data = {
@@ -22,16 +31,8 @@ def board(data_id):
                }
         bdata.append(data)
 
-    # Either updates or displays time 
-    time = ''
-    if request.method == 'POST':
-        time = arrow.now()
-        newnote = { "time" : time.format('YYYY-MM-DD HH:mm:ss ZZ'), 
-                    "info" : request.form['boardnote'] }
-        DATA[data_id]['notes'].append(newnote)
-        DATA[data_id]['last_update'] = time.format('YYYY-MM-DD HH:mm:ss ZZ')
-    else:
-        time = arrow.get(board.last_update, 'YYYY-MM-DD HH:mm:ss ZZ')
+    time = arrow.get(bdata[0]['time'], 'YYYY-MM-DD HH:mm:ss ZZ')
+
     return render_template('board.html', 
                            owner=board.owner,
                            board_no=data_id,
