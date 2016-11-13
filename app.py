@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request
-import sys
+
 import urllib
 import arrow
-import json
+
 from dbmap import Board, Note
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -58,10 +58,12 @@ def boardlist():
 def checkout(data_id):
     new_owner = request.args.get('email')
     print new_owner
+    board = session.query(Board).filter_by(board_no=data_id).first()
     return render_template('checkout.html',
                            board_no=data_id,
                            new_owner=new_owner,
-                           owner=DATA[data_id]['owner'])
+                           owner=board.owner)
+    
 
 @app.route('/scansetup', methods=['GET', 'POST'])
 def scansetup():

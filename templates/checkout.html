@@ -16,11 +16,11 @@
             <h1>Board Number: {{ board_no }}</h1>
             
             {% if owner %}
-            <h2>You ({{new_owner}}) want to check out board {{ board_no }} from {{ owner }}.</h2>
+            <h3>You ({{new_owner}}) want to check out board {{ board_no }} from {{ owner }}.</h3>
             {% else %}
-            <h2>You want to check out board {{ board_no }}.</h2>
+            <h3>You want to check out board {{ board_no }}.</h3>
             {% endif %}
-            <h1>Is this correct?</h1>
+            <h2>Is this correct?</h2>
             
             <table>
                 <form method=get action="/data/{{ board_no }}/checkout">
