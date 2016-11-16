@@ -29,7 +29,7 @@
             {% endif %}
             <table>
                 <form method=post action="/data/{{ board_no }}">
-                    <textarea name="boardnote">Enter modifications here.</textarea><br><br>
+                    <textarea name="boardnote" rows="4" cols="60">Enter modifications here.</textarea><br><br>
                     <input type=submit value="Add Note" class="btn btn-default">
                 </form>
                 {% if new_owner %}
